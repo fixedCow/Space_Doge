@@ -16,7 +16,7 @@ public class FloatingJoystick : Joystick
     {
         background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
         background.gameObject.SetActive(true);
-        background.gameObject.transform.DOScale(new Vector3(1,1,1), 0.2f).From(new Vector3(0,0,0), true);
+        background.gameObject.transform.DOScale(new Vector3(1,1,1), 0.15f).From(new Vector3(0,0,0), true);
         base.OnPointerDown(eventData);
     }
 

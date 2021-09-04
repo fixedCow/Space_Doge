@@ -16,17 +16,16 @@ public class DogeController : MonoBehaviour
     public Rigidbody2D rb2d;
 
     public float speed;
-    
+
     private void Update()
     {
-        if(state == ECharacterState.CantInteract) return;
+        if (state == ECharacterState.CantInteract) return;
 
         Move();
     }
     private void Move()
     {
-        if(!joystick.gameObject.activeSelf) return;
-
+        if (!joystick.gameObject.activeSelf) return;
         rb2d.velocity = joystick.Direction * speed;
     }
 }

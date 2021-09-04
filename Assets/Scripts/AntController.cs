@@ -16,9 +16,9 @@ public class AntController : MonoBehaviour
     }
     private void Rotate()
     {
-        transform.position = doge.transform.position + new Vector3(distance * 
+        transform.position = doge.transform.position + new Vector3(distance *
         Mathf.Cos(theta * Mathf.Deg2Rad), distance * Mathf.Sin(theta * Mathf.Deg2Rad));
-        if(theta < 360) theta += speed * Time.deltaTime;
+        if (theta < 360) theta += speed * Time.deltaTime;
         else theta = 0;
     }
 }
