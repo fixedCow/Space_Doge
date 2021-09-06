@@ -46,8 +46,7 @@ public class DogeController : MonoBehaviour
         }
         else
         {
-            Instantiate(boom, transform.position, Quaternion.identity);
-            Gameover();
+            // Gameover();
         }
     }
     private void Gameover()
