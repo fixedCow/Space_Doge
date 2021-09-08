@@ -13,7 +13,7 @@ public class Bullet : FloatingObject
     private void OnTriggerEnter2D(Collider2D collision)
     {
         DogeController doge = collision.GetComponent<DogeController>();
-        if (doge != null)
+        if (doge != null && doge.GetState() != ECharacterState.Invincible)
         {
             doge.Hit();
             Collide();

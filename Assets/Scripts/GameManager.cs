@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject boomEff;
     private List<GameObject> boomEffs = new List<GameObject>();
+    public GameObject sonicEff;
+    private List<GameObject> sonicEffs = new List<GameObject>();
 
     public float distance = 10f;           // 도지와의 거리(사건의 지평선)
 
@@ -15,6 +17,14 @@ public class GameManager : MonoBehaviour
     {
         if (inst == null)
             inst = this;
+    }
+    private void Update()
+    {
+        // FOR TEST @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DogeController.inst.Dash();
+        }
     }
     public void InstantiateBoomEffect(Vector2 position)
     {
@@ -32,6 +42,29 @@ public class GameManager : MonoBehaviour
         {
             current = Instantiate(boomEff, position, Quaternion.identity, transform) as GameObject;
             boomEffs.Add(current);
+        }
+        else
+        {
+            current.transform.position = position;
+            current.SetActive(true);
+        }
+    }
+    public void InstantiateSonicboomEffect(Vector2 position)
+    {
+        GameObject current = null;
+
+        for (int i = 0; i < sonicEffs.Count; i++)
+        {
+            if (!sonicEffs[i].activeSelf)
+            {
+                current = sonicEffs[i];
+                break;
+            }
+        }
+        if (current == null)
+        {
+            current = Instantiate(sonicEff, position, Quaternion.identity, transform) as GameObject;
+            sonicEffs.Add(current);
         }
         else
         {
