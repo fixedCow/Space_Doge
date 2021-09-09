@@ -41,7 +41,6 @@ public class DogeController : MonoBehaviour
     {
         defaultSprite = sprs[0];
         dashTimer = 0f;
-        invincibleTimer = 0f;
     }
     private void Update()
     {
@@ -69,28 +68,26 @@ public class DogeController : MonoBehaviour
         sr.sprite = sprs[2];
         dashTrail.gameObject.SetActive(true);
         rb2d.velocity = joystick.Direction.normalized * speed * 5f;
-        // Camera.main.GetComponent<ProCamera2DPixelPerfect>().Zoom = 2;
     }
     private void CheckState()
     {
         if (state == ECharacterState.Dash)
         {
             dashTimer += Time.deltaTime;
-            if (dashTimer > 0.2f)
+            if (dashTimer > 0.25f)
             {
                 dashTimer = 0f;
                 rb2d.velocity = Vector2.zero;
                 sr.sprite = defaultSprite;
                 dashTrail.gameObject.SetActive(false);
                 dashTrail.Clear();
-                state = ECharacterState.Invincible;
-                invincibleTimer = 0f;
+                SetInvincibility(true);
             }
         }
         else if (state == ECharacterState.Invincible)
         {
-            invincibleTimer += Time.deltaTime;
-            if (invincibleTimer < 1f)
+            invincibleTimer -= Time.deltaTime;
+            if (invincibleTimer < 0f)
             {
                 if (invincibleTimer % 0.2f < 0.1f)
                     sr.color = new Color32(255, 255, 255, 150);
@@ -99,9 +96,7 @@ public class DogeController : MonoBehaviour
             }
             else
             {
-                sr.color = new Color32(255, 255, 255, 255);
-                invincibleTimer = 0f;
-                state = ECharacterState.Idle;
+                SetInvincibility(false);
             }
         }
     }
@@ -109,12 +104,41 @@ public class DogeController : MonoBehaviour
     {
         if (hasShield)
         {
-
+            SetShield(false);
+            SetInvincibility(true, 1f);
         }
         else
         {
             // Gameover();
         }
+    }
+    public void SetInvincibility(bool b, float time = 0.7f)
+    {
+        if (b)
+        {
+            state = ECharacterState.Invincible;
+            invincibleTimer = time;
+        }
+        else
+        {
+            state = ECharacterState.Idle;
+            invincibleTimer = time;
+            sr.color = new Color32(255, 255, 255, 255);
+        }
+    }
+    public void SetShield(bool b)
+    {
+        if (b)
+        {
+            hasShield = true;
+            sr.sprite = sprs[1];
+        }
+        else
+        {
+            hasShield = false;
+            sr.sprite = sprs[0];
+        }
+
     }
     private void Gameover()
     {

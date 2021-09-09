@@ -9,9 +9,10 @@ public class BulletGenerator : MonoBehaviour
     public GameObject bullet;
     private List<GameObject> bullets = new List<GameObject>();
 
-    [SerializeField] private float speedAvg;
-    [SerializeField] private float speedSeMult;             // 0 ~ 1.0
-    [SerializeField] private int bulletTargetCount;
+    private float speed = 1f;
+    private const float speedMult = 0.006f;
+    private const float turnSpeedMult = 0.01f;
+    [SerializeField] private float df;              // difficulty factor
     [SerializeField] private int bulletCurrentCount;
 
     private void Awake()
@@ -21,12 +22,16 @@ public class BulletGenerator : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(AddBulletCountCo());
-        StartCoroutine(CheckBulletCountCo());
+        StartCoroutine(SpeedAddCo());
+    }
+    private void Update()
+    {
+        CheckBulletCount();
     }
 
     public void InstantiateBullet()
     {
+        bulletCurrentCount++;
         GameObject curBullet = null;
         for (int i = 0; i < bullets.Count; i++)
         {
@@ -38,18 +43,30 @@ public class BulletGenerator : MonoBehaviour
         }
         if (curBullet == null)
         {
-            curBullet = Instantiate(bullet, GetRandomPosition(GameManager.inst.distance), Quaternion.identity, gameObject.transform) as GameObject;
+            curBullet = Instantiate(bullet, GetRandomPosition(GameManager.inst.distance - 1f), Quaternion.identity, gameObject.transform) as GameObject;
             bullets.Add(curBullet);
         }
         else
         {
+            curBullet.GetComponent<Bullet>().rb2d.bodyType = RigidbodyType2D.Dynamic;
             curBullet.SetActive(true);
-            curBullet.transform.position = GetRandomPosition(GameManager.inst.distance);
+            curBullet.transform.position = GetRandomPosition(GameManager.inst.distance - 1f);
         }
-        curBullet.GetComponent<Bullet>().SetSpeed(Random.Range(speedAvg - (speedAvg * speedSeMult), speedAvg + (speedAvg * speedSeMult)));
-        curBullet.GetComponent<Bullet>().Shoot();
-        bulletCurrentCount++;
-
+        Bullet temp = curBullet.GetComponent<Bullet>();
+        temp.sr.gameObject.SetActive(true);
+        temp.rb2d.velocity = Vector2.zero;
+        if (df > 100f && Random.Range(0, 100) < 15)
+        {
+            temp.SetIsGuided(true);
+            temp.SetTurnSpeed(df * turnSpeedMult);
+            temp.SetSpeed(Random.Range(0.7f, 1.8f));
+            // temp.gameObject.transform.LookAt(DogeController.inst.transform);
+        }
+        else
+        {
+            temp.SetSpeed(Random.Range(speed, speed + (df * speedMult)));
+            temp.Shoot();
+        }
     }
     private Vector2 GetRandomPosition(float distance)
     {
@@ -61,31 +78,21 @@ public class BulletGenerator : MonoBehaviour
     public void BulletRemoved()
     {
         bulletCurrentCount--;
-        Invoke("CheckBulletCount", Random.Range(0, 1f));
+        CheckBulletCount();
     }
     private void CheckBulletCount()
     {
-        if (bulletCurrentCount < bulletTargetCount)
+        if (bulletCurrentCount < (df / 3))
         {
             InstantiateBullet();
         }
     }
-    private IEnumerator CheckBulletCountCo()
-    {
-        float timer;
-        while (true)
-        {
-            timer = Random.Range(0, 1f);
-            yield return new WaitForSeconds(timer);
-            CheckBulletCount();
-        }
-    }
-    private IEnumerator AddBulletCountCo()
+    private IEnumerator SpeedAddCo()
     {
         while (true)
         {
-            yield return new WaitForSeconds(2f);
-            bulletTargetCount++;
+            yield return new WaitForSeconds(1f);
+            df += 1;
         }
     }
 }

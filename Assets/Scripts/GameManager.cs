@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject sonicEff;
     private List<GameObject> sonicEffs = new List<GameObject>();
 
-    public float distance = 10f;           // 도지와의 거리(사건의 지평선)
+    public float distance = 15f;           // 도지와의 거리(사건의 지평선)
 
     private void Awake()
     {
@@ -25,6 +25,20 @@ public class GameManager : MonoBehaviour
         {
             DogeController.inst.Dash();
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DogeController.inst.SetShield(true);
+        }
+    }
+    public void SetGameStop(float time)
+    {
+        StartCoroutine("SetGameStopCo", time);
+    }
+    private IEnumerator SetGameStopCo(float time)
+    {
+        Time.timeScale = 0.0001f;
+        yield return new WaitForSeconds(0.0001f * time);
+        Time.timeScale = 1f;
     }
     public void InstantiateBoomEffect(Vector2 position)
     {
