@@ -13,7 +13,7 @@ public class FloatingObject : MonoBehaviour
     protected float timer;
     protected Vector2 direction;
 
-    protected virtual void Update()
+    protected virtual void LateUpdate()
     {
         CheckSelfDestroyedCondition();
         GuidedCheck();
@@ -45,9 +45,9 @@ public class FloatingObject : MonoBehaviour
     protected virtual void GuidedCheck()
     {
         if (isGuided)
-            Homing();
+            GuidedMove();
     }
-    protected virtual void Homing()
+    protected virtual void GuidedMove()
     {
         Vector2 dir = (Vector2)DogeController.inst.transform.position - (Vector2)transform.position;
 

@@ -9,6 +9,18 @@ public class Bullet : FloatingObject
     public TrailRenderer trail;
     public ParticleSystem psTrail;
 
+    private void OnDisable()
+    {
+        SetIsGuided(false);
+        trail.Clear();
+        psTrail.Clear();
+        trail.emitting = true;
+        psTrail.Play();
+        turnSpeed = 0f;
+        speed = 0f;
+        timer = 0f;
+        transform.eulerAngles = new Vector3(0, 0, 0);
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!sr.gameObject.activeSelf)
@@ -35,10 +47,11 @@ public class Bullet : FloatingObject
     }
     protected override void Deactivate()
     {
+        if (!sr.gameObject.activeSelf)
+            return;
         sr.gameObject.SetActive(false);
         trail.emitting = false;
         psTrail.Stop();
-        timer = 0f;
         rb2d.bodyType = RigidbodyType2D.Static;
         Invoke("ResetBullet", 1f);
     }
@@ -58,18 +71,13 @@ public class Bullet : FloatingObject
     }
     private void ResetBullet()
     {
-        SetIsGuided(false);
-        trail.Clear();
-        psTrail.Clear();
-        trail.emitting = true;
-        psTrail.Play();
-        BulletGenerator.inst.BulletRemoved();
         gameObject.SetActive(false);
+        BulletGenerator.inst.BulletRemoved();
     }
-    protected override void Homing()
+    protected override void GuidedMove()
     {
         if (rb2d.bodyType == RigidbodyType2D.Static)
             return;
-        base.Homing();
+        base.GuidedMove();
     }
 }

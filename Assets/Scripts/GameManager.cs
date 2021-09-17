@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public GameObject sonicEff;
     private List<GameObject> sonicEffs = new List<GameObject>();
 
+    // TEST
+    public AntManager am;
+
     public float distance = 15f;           // 도지와의 거리(사건의 지평선)
 
     private void Awake()
@@ -28,6 +31,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             DogeController.inst.SetShield(true);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            am.AddAnt();
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            am.RemoveAnt();
         }
     }
     public void SetGameStop(float time)

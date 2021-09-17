@@ -24,7 +24,7 @@ public class BulletGenerator : MonoBehaviour
     {
         StartCoroutine(SpeedAddCo());
     }
-    private void Update()
+    private void LateUpdate()
     {
         CheckBulletCount();
     }
@@ -43,24 +43,29 @@ public class BulletGenerator : MonoBehaviour
         }
         if (curBullet == null)
         {
-            curBullet = Instantiate(bullet, GetRandomPosition(GameManager.inst.distance - 1f), Quaternion.identity, gameObject.transform) as GameObject;
+            curBullet = Instantiate(bullet, GetRandomPosition(GameManager.inst.distance - 2f), Quaternion.identity, gameObject.transform) as GameObject;
             bullets.Add(curBullet);
         }
         else
         {
-            curBullet.GetComponent<Bullet>().rb2d.bodyType = RigidbodyType2D.Dynamic;
+            curBullet.transform.position = GetRandomPosition(GameManager.inst.distance - 2f);
+            curBullet.GetComponent<Bullet>().sr.gameObject.SetActive(true);
             curBullet.SetActive(true);
-            curBullet.transform.position = GetRandomPosition(GameManager.inst.distance - 1f);
+            if (curBullet.GetComponent<Bullet>().rb2d.bodyType != RigidbodyType2D.Dynamic)
+                curBullet.GetComponent<Bullet>().rb2d.bodyType = RigidbodyType2D.Dynamic;
         }
         Bullet temp = curBullet.GetComponent<Bullet>();
-        temp.sr.gameObject.SetActive(true);
         temp.rb2d.velocity = Vector2.zero;
         if (df > 100f && Random.Range(0, 100) < 15)
         {
             temp.SetIsGuided(true);
+
+            float angle = Mathf.Atan2(DogeController.inst.transform.position.y - temp.transform.position.y,
+                DogeController.inst.transform.position.x - temp.transform.position.x) * Mathf.Rad2Deg;
+            temp.transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+
             temp.SetTurnSpeed(df * turnSpeedMult);
             temp.SetSpeed(Random.Range(0.7f, 1.8f));
-            // temp.gameObject.transform.LookAt(DogeController.inst.transform);
         }
         else
         {
@@ -78,7 +83,7 @@ public class BulletGenerator : MonoBehaviour
     public void BulletRemoved()
     {
         bulletCurrentCount--;
-        CheckBulletCount();
+        // CheckBulletCount();
     }
     private void CheckBulletCount()
     {
@@ -91,7 +96,7 @@ public class BulletGenerator : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.3f);
             df += 1;
         }
     }

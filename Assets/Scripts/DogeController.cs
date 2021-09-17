@@ -20,12 +20,16 @@ public class DogeController : MonoBehaviour
     public FloatingJoystick joystick;
     public SpriteRenderer sr;
     public Rigidbody2D rb2d;
+    public CircleCollider2D col2d;
     public Sprite[] sprs;
     private Sprite defaultSprite;
     public TrailRenderer dashTrail;
 
     public GameObject boom;
     private IEnumerator invincibleCo;
+
+    private const float col2dR = 0.18f;
+    private const float col2dRDash = 0.45f;
 
     private bool hasShield;
     private float dashTimer;
@@ -67,6 +71,7 @@ public class DogeController : MonoBehaviour
         defaultSprite = sr.sprite;
         sr.sprite = sprs[2];
         dashTrail.gameObject.SetActive(true);
+        col2d.radius = col2dRDash;
         rb2d.velocity = joystick.Direction.normalized * speed * 5f;
     }
     private void CheckState()
@@ -78,6 +83,7 @@ public class DogeController : MonoBehaviour
             {
                 dashTimer = 0f;
                 rb2d.velocity = Vector2.zero;
+                col2d.radius = col2dR;
                 sr.sprite = defaultSprite;
                 dashTrail.gameObject.SetActive(false);
                 dashTrail.Clear();
@@ -87,7 +93,7 @@ public class DogeController : MonoBehaviour
         else if (state == ECharacterState.Invincible)
         {
             invincibleTimer -= Time.deltaTime;
-            if (invincibleTimer < 0f)
+            if (invincibleTimer > 0f)
             {
                 if (invincibleTimer % 0.2f < 0.1f)
                     sr.color = new Color32(255, 255, 255, 150);
@@ -116,8 +122,8 @@ public class DogeController : MonoBehaviour
     {
         if (b)
         {
-            state = ECharacterState.Invincible;
             invincibleTimer = time;
+            state = ECharacterState.Invincible;
         }
         else
         {

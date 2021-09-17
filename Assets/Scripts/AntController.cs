@@ -21,4 +21,6 @@ public class AntController : MonoBehaviour
         if (theta < 360) theta += speed * Time.deltaTime;
         else theta = 0;
     }
+    public void SetTheta(float value) => theta = value;
+    public void SetDoge(GameObject _doge) => doge = _doge;
 }
