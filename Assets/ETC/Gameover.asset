@@ -9,15 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbf2b71a297b84564b930517da7ba2d8, type: 3}
-  m_Name: hit
+  m_Script: {fileID: 11500000, guid: 2b203a55d908247b5a828b0c77fca2c1, type: 3}
+  m_Name: Gameover
   m_EditorClassIdentifier: 
-  Strength: {x: 0.2, y: 0.2, z: 0}
-  Duration: 0.1
-  Vibrato: 7
-  Randomness: 0
-  Smoothness: 0
-  UseRandomInitialAngle: 1
-  InitialAngle: 0
-  Rotation: {x: 0, y: 0, z: 0}
-  IgnoreTimeScale: 1
+  Intensity: 50
+  Layers:
+  - Frequency: {x: 0.001, y: 0.001}
+    AmplitudeHorizontal: 0.3
+    AmplitudeVertical: 0.3
+    AmplitudeDepth: 0

@@ -240,6 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4764364271496376434}
   - component: {fileID: 4764364271496376433}
+  - component: {fileID: 855002913572968110}
   m_Layer: 0
   m_Name: renderer
   m_TagString: Untagged
@@ -312,6 +313,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &855002913572968110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764364271496376435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4695037a2aece46e6bbdf2cbb78dc2da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pc2D: {fileID: 0}
+  IsAMovingObject: 1
+  IsAChildSprite: 1
+  LocalPosition: {x: 0, y: 0}
+  SpriteScale: 0
+  _initialScale: {x: 1, y: 1, z: 1}
 --- !u!1 &6057452162571884293
 GameObject:
   m_ObjectHideFlags: 0

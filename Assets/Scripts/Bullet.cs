@@ -9,17 +9,13 @@ public class Bullet : FloatingObject
     public TrailRenderer trail;
     public ParticleSystem psTrail;
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        SetIsGuided(false);
+        base.OnDisable();
         trail.Clear();
         psTrail.Clear();
         trail.emitting = true;
         psTrail.Play();
-        turnSpeed = 0f;
-        speed = 0f;
-        timer = 0f;
-        transform.eulerAngles = new Vector3(0, 0, 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

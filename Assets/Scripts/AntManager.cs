@@ -11,8 +11,10 @@ public class AntManager : MonoBehaviour
 
     public void AddAnt()
     {
+        /* TESTTTTTT@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         if (currentAnts.Count >= 7)
             return;
+        */
 
         GameObject current = null;
         for (int i = 0; i < ants.Count; i++)

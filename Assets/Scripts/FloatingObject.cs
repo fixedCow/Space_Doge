@@ -13,6 +13,14 @@ public class FloatingObject : MonoBehaviour
     protected float timer;
     protected Vector2 direction;
 
+    protected virtual void OnDisable()
+    {
+        SetIsGuided(false);
+        turnSpeed = 0f;
+        speed = 0f;
+        timer = 0f;
+        transform.eulerAngles = new Vector3(0, 0, 0);
+    }
     protected virtual void LateUpdate()
     {
         CheckSelfDestroyedCondition();
@@ -22,7 +30,7 @@ public class FloatingObject : MonoBehaviour
     public void SetSpeed(float value) => speed = value;
     public void SetTurnSpeed(float value) => turnSpeed = value;
 
-    public void Shoot()
+    public virtual void Shoot()
     {
         direction = (DogeController.inst.transform.position - transform.position).normalized;
         rb2d.velocity = direction * speed;

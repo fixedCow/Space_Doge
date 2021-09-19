@@ -72,14 +72,14 @@ public class DogeController : MonoBehaviour
         sr.sprite = sprs[2];
         dashTrail.gameObject.SetActive(true);
         col2d.radius = col2dRDash;
-        rb2d.velocity = joystick.Direction.normalized * speed * 5f;
+        rb2d.velocity = joystick.Direction.normalized * speed * 7f;
     }
     private void CheckState()
     {
         if (state == ECharacterState.Dash)
         {
             dashTimer += Time.deltaTime;
-            if (dashTimer > 0.25f)
+            if (dashTimer > 0.15f)
             {
                 dashTimer = 0f;
                 rb2d.velocity = Vector2.zero;
@@ -111,14 +111,14 @@ public class DogeController : MonoBehaviour
         if (hasShield)
         {
             SetShield(false);
-            SetInvincibility(true, 1f);
+            SetInvincibility(true, 1.5f);
         }
         else
         {
             // Gameover();
         }
     }
-    public void SetInvincibility(bool b, float time = 0.7f)
+    public void SetInvincibility(bool b, float time = 0.5f)
     {
         if (b)
         {
@@ -148,6 +148,10 @@ public class DogeController : MonoBehaviour
     }
     private void Gameover()
     {
-        state = ECharacterState.CantInteract;
+        //state = ECharacterState.CantInteract;
+        //Camera.main.GetComponent<ProCamera2DPixelPerfect>().enabled = false;
+        rb2d.velocity = Vector2.zero;
+        GameManager.inst.SetTimeScale(0.2f);
+        //Camera.main.GetComponent<ProCamera2DPixelPerfect>().Zoom = 2;
     }
 }
