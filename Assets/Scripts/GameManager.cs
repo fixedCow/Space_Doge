@@ -6,12 +6,15 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager inst;
 
+    public List<AudioClip> adClip = new List<AudioClip>();
     public GameObject boomEff;
     private List<GameObject> boomEffs = new List<GameObject>();
     public GameObject sonicEff;
     private List<GameObject> sonicEffs = new List<GameObject>();
     public GameObject bigBoomEff;
     private List<GameObject> bigBoomEffs = new List<GameObject>();
+    public GameObject rockParticle;
+    private List<GameObject> rockParticles = new List<GameObject>();
 
     // TEST
     public AntManager am;
@@ -61,6 +64,8 @@ public class GameManager : MonoBehaviour
     }
     public void InstantiateBoomEffect(Vector2 position)
     {
+        SoundManager.inst.PlaySound(adClip[0]);
+
         GameObject current = null;
 
         for (int i = 0; i < boomEffs.Count; i++)
@@ -121,6 +126,28 @@ public class GameManager : MonoBehaviour
         {
             current = Instantiate(bigBoomEff, position, Quaternion.identity, transform) as GameObject;
             bigBoomEffs.Add(current);
+        }
+        else
+        {
+            current.transform.position = position;
+            current.SetActive(true);
+        }
+    }
+    public void InstantiateRockParticles(Vector2 position)
+    {
+        GameObject current = null;
+        for (int i = 0; i < rockParticles.Count; i++)
+        {
+            if (!rockParticles[i].activeSelf)
+            {
+                current = rockParticles[i];
+                break;
+            }
+        }
+        if (current == null)
+        {
+            current = Instantiate(rockParticle, position, Quaternion.identity, transform) as GameObject;
+            rockParticles.Add(current);
         }
         else
         {

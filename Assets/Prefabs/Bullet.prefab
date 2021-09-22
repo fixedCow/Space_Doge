@@ -193,6 +193,7 @@ MonoBehaviour:
   sr: {fileID: 4764364271496376433}
   trail: {fileID: 4764364271264790892}
   psTrail: {fileID: 6057452162571884290}
+  adClip: {fileID: 8300000, guid: 2aa3711043dac4583a144cc3b23342d1, type: 3}
 --- !u!58 &4764364271320125918
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -307,7 +308,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

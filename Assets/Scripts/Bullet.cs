@@ -26,9 +26,13 @@ public class Bullet : FloatingObject
         if (doge != null && doge.GetState() != ECharacterState.Invincible)
         {
             Camera.main.GetComponent<ProCamera2DShake>().Shake(0);
-            GameManager.inst.SetGameStop(0.06f);
             if (doge.GetState() != ECharacterState.Dash)
+            {
+                GameManager.inst.SetGameStop(0.06f);
                 doge.Hit();
+            }
+            else
+                GameManager.inst.SetGameStop(0.1f);
             Collide();
         }
         else if (collision.tag == "Ant")
@@ -68,7 +72,7 @@ public class Bullet : FloatingObject
     private void ResetBullet()
     {
         gameObject.SetActive(false);
-        BulletGenerator.inst.BulletRemoved();
+        BulletGenerator.inst.ObjectRemoved((int)ObjectType.Bullet);
     }
     protected override void GuidedMove()
     {

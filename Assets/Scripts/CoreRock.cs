@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Com.LuisPedroFonseca.ProCamera2D;
 
-public class Rock : FloatingObject
+public class CoreRock : FloatingObject
 {
     public SpriteRenderer sr;
 
@@ -25,7 +25,10 @@ public class Rock : FloatingObject
             GameManager.inst.InstantiateBoomEffect(collision.ClosestPoint(transform.position));
             Camera.main.GetComponent<ProCamera2DShake>().Shake(0);
             GameManager.inst.SetGameStop(0.12f);
-            doge.Hit();
+            if (doge.GetState() != ECharacterState.Dash)
+                doge.Hit();
+            GenerateParticles();
+            Collide();
         }
         else if (collision.tag == "BlackHole")
             Collide();
@@ -37,8 +40,12 @@ public class Rock : FloatingObject
     }
     protected override void Deactivate()
     {
-        BulletGenerator.inst.ObjectRemoved((int)ObjectType.Rock);
+        BulletGenerator.inst.ObjectRemoved((int)ObjectType.CoreRock);
         base.Deactivate();
+    }
+    private void GenerateParticles()
+    {
+        GameManager.inst.InstantiateRockParticles(transform.position);
     }
     public override void Shoot()
     {
