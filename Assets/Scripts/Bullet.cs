@@ -32,7 +32,7 @@ public class Bullet : FloatingObject
                 doge.Hit();
             }
             else
-                GameManager.inst.SetGameStop(0.1f);
+                GameManager.inst.SetGameStop(0.08f);
             Collide();
         }
         else if (collision.tag == "Ant")

@@ -14,21 +14,25 @@ public class Rock : FloatingObject
         Shoot();
         SetAngularVelocity(Random.Range(-10f, 10f));
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!sr.gameObject.activeSelf)
             return;
 
-        DogeController doge = collision.GetComponent<DogeController>();
+        DogeController doge = collision.gameObject.GetComponent<DogeController>();
         if (doge != null && doge.GetState() != ECharacterState.Invincible)
         {
-            GameManager.inst.InstantiateBoomEffect(collision.ClosestPoint(transform.position));
-            Camera.main.GetComponent<ProCamera2DShake>().Shake(0);
+            GameManager.inst.InstantiateBoomEffect(collision.collider.ClosestPoint(transform.position));
+            Camera.main.GetComponent<ProCamera2DShake>().Shake(1);
             GameManager.inst.SetGameStop(0.12f);
             doge.Hit();
         }
-        else if (collision.tag == "BlackHole")
+        else if (collision.gameObject.tag == "BlackHole")
             Collide();
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
     }
     private void Collide()
     {
