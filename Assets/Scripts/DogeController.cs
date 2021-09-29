@@ -17,7 +17,6 @@ public class DogeController : MonoBehaviour
     public static DogeController inst;
 
     [SerializeField] private ECharacterState state = ECharacterState.Idle;
-    public FloatingJoystick joystick;
     public SpriteRenderer sr;
     public Rigidbody2D rb2d;
     public CircleCollider2D col2d;
@@ -28,11 +27,7 @@ public class DogeController : MonoBehaviour
     public GameObject boom;
     private IEnumerator invincibleCo;
 
-    private const float col2dR = 0.18f;
-    private const float col2dRDash = 0.45f;
-
     private bool hasShield;
-    private float dashTimer;
     private float invincibleTimer;
     public float speed;
 
@@ -44,53 +39,32 @@ public class DogeController : MonoBehaviour
     private void Start()
     {
         defaultSprite = sprs[0];
-        dashTimer = 0f;
     }
     private void Update()
     {
         if (state == ECharacterState.CantInteract) return;
 
-        Move();
         CheckState();
     }
     public ECharacterState GetState() { return state; }
-    private void Move()
+    public void Move(int dir)
     {
-        if (!joystick.gameObject.activeSelf || state == ECharacterState.Dash)
-            return;
-        rb2d.velocity = joystick.Direction * speed;
-    }
-    public void Dash()
-    {
-        if (!ChargeGaugeController.inst.CheckDashPossibility() || state == ECharacterState.CantInteract || state == ECharacterState.Dash)
-            return;
-
-        state = ECharacterState.Dash;
-        GameManager.inst.InstantiateSonicboomEffect(transform.position);
-        sr.color = new Color32(255, 255, 255, 255);
-        defaultSprite = sr.sprite;
-        sr.sprite = sprs[2];
-        dashTrail.gameObject.SetActive(true);
-        col2d.radius = col2dRDash;
-        rb2d.velocity = joystick.Direction.normalized * speed * 7f;
+        switch (dir)
+        {
+            case 0:
+                rb2d.velocity = Vector2.zero;
+                break;
+            case 1:             // left
+                rb2d.velocity = Vector2.left * 5;
+                break;
+            case 2:
+                rb2d.velocity = Vector2.right * 5;
+                break;
+        }
     }
     private void CheckState()
     {
-        if (state == ECharacterState.Dash)
-        {
-            dashTimer += Time.deltaTime;
-            if (dashTimer > 0.15f)
-            {
-                dashTimer = 0f;
-                rb2d.velocity = Vector2.zero;
-                col2d.radius = col2dR;
-                sr.sprite = defaultSprite;
-                dashTrail.gameObject.SetActive(false);
-                dashTrail.Clear();
-                SetInvincibility(true);
-            }
-        }
-        else if (state == ECharacterState.Invincible)
+        if (state == ECharacterState.Invincible)
         {
             invincibleTimer -= Time.deltaTime;
             if (invincibleTimer > 0f)

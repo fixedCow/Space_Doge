@@ -16,7 +16,7 @@ public class FloatingJoystick : Joystick
     {
         if (background.gameObject.activeSelf && Direction != new Vector2(0, 0))
         {
-            DogeController.inst.Dash();
+            // DogeController.inst.Dash();
         }
         else
         {

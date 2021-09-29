@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Com.LuisPedroFonseca.ProCamera2D;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,11 +17,9 @@ public class GameManager : MonoBehaviour
     public GameObject rockParticle;
     private List<GameObject> rockParticles = new List<GameObject>();
 
-    // TEST
-    public AntManager am;
-
     public float distance = 15f;           // 도지와의 거리(사건의 지평선)
     private float timeScale = 1f;
+    public ConstantShakePreset shake;
 
     private void Awake()
     {
@@ -32,20 +31,36 @@ public class GameManager : MonoBehaviour
         // FOR TEST @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            DogeController.inst.Dash();
+
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             DogeController.inst.SetShield(true);
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            am.AddAnt();
+            DogeController.inst.Move(1);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
-            am.RemoveAnt();
+            DogeController.inst.Move(0);
         }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            DogeController.inst.Move(2);
+        }
+        else if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            DogeController.inst.Move(0);
+        }
+        ShakeScreen();
+    }
+    private void ShakeScreen()
+    {
+        if (shake.Intensity == DogeController.inst.speed * 2)
+            return;
+        shake.Intensity = DogeController.inst.speed * 2;
+        Camera.main.GetComponent<ProCamera2DShake>().ConstantShake(0);
     }
     public void SetGameStop(float time)
     {
